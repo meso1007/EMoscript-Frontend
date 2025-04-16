@@ -1,0 +1,59 @@
+@import "tailwindcss";
+:root {
+  --background: #f7f9ff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@font-face {
+  font-family: 'GeneralSans';
+  src: url('/fonts/GeneralSans-Bold.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Phosphate';
+  src: url('/fonts/PhosphateRR Solid.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "GeneralSans", Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+.header {
+  color: #3f5c33;
+}
+
+.oriWhite {
+  color: #f7f9ff;
+}
+
+.bgOriWhite {
+  background-color: #f7f9ff;
+}
+
+.companyName {
+  font-family: "Phosphate";
+  color: #5F8B4C;
+  stroke-width:2 #131b10;
+}
