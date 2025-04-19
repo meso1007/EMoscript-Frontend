@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import SideBar from "./SideBar";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ export default function CanvasTurtle({ moves, resetting }: Props) {
   const [goalReached, setGoalReached] = useState(false);
   const goalPosition = 550;
   const router = useRouter();
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const moveNextLevel = () => {
     router.push("/level2");
@@ -54,6 +55,11 @@ export default function CanvasTurtle({ moves, resetting }: Props) {
         !goalReached
       ) {
         setGoalReached(true);
+        if (audioRef.current) {
+          audioRef.current
+            .play()
+            .catch((e) => console.error("Audio error:", e));
+        }
       }
     };
 
@@ -63,6 +69,7 @@ export default function CanvasTurtle({ moves, resetting }: Props) {
 
   return (
     <div className="mt-18 relative w-[600px] h-[350px] border-4 border-[#5F8B4C] rounded-lg shadow-lg overflow-hidden mb-6">
+      <audio ref={audioRef} src="/music/goal.mp3" preload="auto" />
       {Array.from({ length: goalPosition / stepSize + 1 }).map((_, i) => {
         const left = i * stepSize;
         const isCurrent = Math.round(position / stepSize) === i;

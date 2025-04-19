@@ -26,13 +26,13 @@ export default function LevelSelect() {
         transition={{ duration: 1 }}
         className="w-full bigContainer mt-7 mx-40"
       >
-        <div className="w-2/3 gap-20 flex justify-center items-center mb-10">
-          <div className="text-4xl header flex items-center">
+        <div className="w-1/2 flex justify-between items-center mb-10">
+          <div className="text-4xl header flex items-center pr-20">
             <Image alt="logo" src="/logo.png" width={70} height={70} />
-            <h1 className="sideHeader">EMo Script</h1>
+            <h1 className="sideHeader ">EMo Script</h1>
           </div>
           <div className="text-center ">
-            <p className="text-4xl font-bold text-gray-900">Stage Select</p>
+            <p className="text-4xl font-bold text-gray-900 companyName">Stage Select</p>
           </div>
         </div>
 
@@ -79,8 +79,7 @@ export default function LevelSelect() {
                 <tr className="text-center cursor-pointer hover:bg-blue-100">
                   <td className="py-2 px-4 border-b text-center">🔵 Level 3</td>
                   <td className="py-2 px-4 border-b text-center">
-                    うさぎのひとやすみ, ゴールをめざそう!
-                  </td>
+                  かめでゴールぴったり走ろう！                  </td>
                   <td className="w-full py-2 px-4 border-b flex justify-center">
                     <Link
                       href="/level3"
@@ -91,13 +90,41 @@ export default function LevelSelect() {
                   </td>
                 </tr>
                 <tr className="text-center cursor-pointer hover:bg-blue-100">
-                  <td className="py-2 px-4 border-b text-center">🔴 Level 4</td>
+                  <td className="py-2 px-4 border-b text-center">🔵 Level 4</td>
+                  <td className="py-2 px-4 border-b text-center">
+                  うさぎでゴールぴったり走ろう！
+                  </td>
+                  <td className="w-full py-2 px-4 border-b flex justify-center">
+                    <Link
+                      href="/level4"
+                      className="w-[200px] h-full bg-[#c0cef0] rounded-2xl shadow-lg flex items-center justify-center hover:bg-[#9eb4ea] transition py-2 px-4"
+                    >
+                      スタート
+                    </Link>
+                  </td>
+                </tr>
+                <tr className="text-center cursor-pointer hover:bg-blue-100">
+                  <td className="py-2 px-4 border-b text-center">🔵 Level 5</td>
+                  <td className="py-2 px-4 border-b text-center">
+                    うさぎのひとやすみ, ゴールをめざそう!
+                  </td>
+                  <td className="w-full py-2 px-4 border-b flex justify-center">
+                    <Link
+                      href="/level5"
+                      className="w-[200px] h-full bg-[#c0cef0] rounded-2xl shadow-lg flex items-center justify-center hover:bg-[#9eb4ea] transition py-2 px-4"
+                    >
+                      スタート
+                    </Link>
+                  </td>
+                </tr>
+                <tr className="text-center cursor-pointer hover:bg-blue-100">
+                  <td className="py-2 px-4 border-b text-center">🔴 Level 6</td>
                   <td className="py-2 px-4 border-b text-center">
                     うさぎとカメを同時にゴールさせよう！
                   </td>
                   <td className="w-full py-2 px-4 border-b flex justify-center">
                     <Link
-                      href="/level4"
+                      href="/level6"
                       className="w-[200px] h-full bg-[#f9c0c0] rounded-2xl shadow-lg flex items-center justify-center hover:bg-[#f6a9a9] transition py-2 px-4"
                     >
                       スタート
@@ -106,7 +133,7 @@ export default function LevelSelect() {
                 </tr>
                 {/* レベル5以降は有料プラン */}
                 <tr className="text-center cursor-pointer hover:bg-blue-100">
-                  <td className="py-2 px-4 border-b text-center">🟡 Level 5</td>
+                  <td className="py-2 px-4 border-b text-center">🟡 Level 7</td>
                   <td className="py-2 px-4 border-b text-center">
                     有料プランで開放されます。
                   </td>
@@ -121,7 +148,7 @@ export default function LevelSelect() {
                   </td>
                 </tr>
                 <tr className="text-center cursor-pointer hover:bg-blue-100">
-                  <td className="py-2 px-4 border-b text-center">🟡 Level 6</td>
+                  <td className="py-2 px-4 border-b text-center">🟡 Level 8</td>
                   <td className="py-2 px-4 border-b text-center">
                     有料プランで開放されます。
                   </td>

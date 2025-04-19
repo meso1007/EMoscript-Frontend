@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import CanvasTurtle from "../../components/CanvasTurtle";
+import CanvasTurtle from "../../components/level1";
 import { emoji1 } from "@/utils/level1Emoji";
 import SideBar from "@/components/SideBar";
 import Image from "next/image";
@@ -13,7 +13,7 @@ export default function Level1Page() {
   const [resetting, setResetting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [loading, setLoading] = useState(true);
-  const emojiButtons = ["🐢", "➡️", "⬅️"];
+  const emojiButtons = ["🐢", "➡️"];
 
   
   // ローディング処理
@@ -66,7 +66,7 @@ export default function Level1Page() {
         <SideBar />
         <main className="flex flex-col items-center justify-center ">
           <h1 className="flex justify-start items-center text-5xl font-bold text-center header mb-4">
-            Level 1: かめをゴールまで走らせよう！
+            Level 1: かめでゴールまで走りぬけよう！
           </h1>
           <p className="text-xl">ヒント：かめは➡️で１マスすすむよ！</p>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import CanvasRabbit from "../../components/CanvasRabbit";
+import CanvasRabbit from "../../components/level2";
 import { emoji2 } from "@/utils/level2Emoji";
 import SideBar from "@/components/SideBar";
 import Image from "next/image";
@@ -14,7 +14,7 @@ export default function Level2Page() {
   const [resetting, setResetting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [loading, setLoading] = useState(true);
-  const emojiButtons = ["🐰", "➡️", "⬅️"];
+  const emojiButtons = ["🐰", "➡️"];
 
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function Level2Page() {
         <SideBar />
         <main className="min-h-screen flex flex-col items-center justify-center">
           <h1 className="flex justify-start items-center text-5xl font-bold text-center header mb-4">
-            Level 2: うさぎをゴールまで走らせよう！
+            Level 2: うさぎでゴールまで走りぬけよう！
           </h1>
           <p className="text-xl">
             ヒント：うさぎは足が早いから➡️で２マス進むよ！

@@ -1,15 +1,15 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import CanvasRabbit5 from "@/components/level5";
 import { emoji3 } from "../../utils/level3Emoji";
 import SideBar from "@/components/SideBar";
 import Image from "next/image";
 import LoadingScreen from "@/components/LoadingScreen";
 import { motion } from "framer-motion";
-import CanvasTurtle3 from "@/components/level3";
 
-export default function Level4Page() {
-  const [code, setCode] = useState("🐢");
+export default function Level5Page() {
+  const [code, setCode] = useState("🐰");
   const [commands, setCommands] = useState<string[]>([]);
   const [resetting, setResetting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -28,7 +28,7 @@ export default function Level4Page() {
 
   if (loading) return <LoadingScreen />;
 
-  const emojiButtons = ["🐢", "➡️", "⬅️"];
+  const emojiButtons = ["🐰", "➡️", "⬅️", "🕐"];
 
   const handleEmojiClick = (emoji: string) => {
     setCode((prev) => prev + emoji);
@@ -55,7 +55,7 @@ export default function Level4Page() {
 
   const handleRetry = () => {
     setCommands([]);
-    setCode("🐢");
+    setCode("🐰");
     setResetting(true);
   };
 
@@ -72,12 +72,10 @@ export default function Level4Page() {
       </div>
       <SideBar />
       <main className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="flex justify-start items-center text-5xl font-bold text-center header mb-4">
-          Level 3: かめでゴールぴったり走ろう！
+        <h1 className="text-5xl font-bold text-center header mb-4">
+          Level 5: うさぎのひとやすみ, ゴールをめざそう！
         </h1>
-        <p className="text-xl">
-          ヒント：かめは➡️で１マス、⬅️で１マスもどるよ！
-        </p>
+        <p className="text-xl">ヒント:🕐で1秒間ひとやすみ!</p>
 
         <div className="flex justify-center items-center h-screen mt-5 ml-20 gap-10">
           <div className="h-full">
@@ -105,7 +103,7 @@ export default function Level4Page() {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               className="w-full max-w-lg min-h-[350px] p-4 text-4xl rounded-md border-4 border-[#f1e42d] focus:outline-none focus:ring-2 focus:ring-pink-300 mb-6"
-              placeholder="🐢"
+              placeholder="🐰➡️➡️➡️🕐➡️➡️"
             />
 
             <div className="flex items-center gap-3">
@@ -125,7 +123,7 @@ export default function Level4Page() {
           </div>
 
           <div className="h-full">
-            <CanvasTurtle3 commands={commands} resetting={resetting} />
+            <CanvasRabbit5 commands={commands} resetting={resetting} />
           </div>
         </div>
       </main>

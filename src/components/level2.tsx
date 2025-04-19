@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import SideBar from "./SideBar";
 import { useRouter } from "next/navigation";
@@ -11,62 +11,86 @@ const Player = dynamic(
 );
 
 type Props = {
-  commands: string[];
+  moves: number;
   resetting: boolean;
 };
 
-const CanvasRabbit2: React.FC<Props> = ({ commands, resetting }) => {
-  const cellSize = 50; //マスの距離
-  const stepSize = cellSize * 2; //進む距離
+export default function CanvasRabbit({ moves, resetting }: Props) {
+  const cellSize = 50;
+  const stepSize = cellSize * 2;
   const [position, setPosition] = useState(0);
   const [goalReached, setGoalReached] = useState(false);
   const goalPosition = 550;
   const router = useRouter();
-  const [timerUsed, setTimerUsed] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const nextLevelAudioRef = useRef<HTMLAudioElement | null>(null);
+  const tryAgainAudioRef = useRef<HTMLAudioElement | null>(null);
+
   const moveNextLevel = () => {
-    router.push("/level4");
+    if (nextLevelAudioRef.current) {
+      nextLevelAudioRef.current
+        .play()
+        .catch((e) => console.error("Audio error:", e));
+    }
+    setTimeout(() => {
+      router.push("/level3");
+    }, 500);
   };
+
+  const tryAgain = () => {
+    if (tryAgainAudioRef.current) {
+      tryAgainAudioRef.current
+        .play()
+        .catch((e) => console.error("Audio error:", e));
+    }
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
+  };
+
   useEffect(() => {
     if (resetting) {
       setPosition(0);
       setGoalReached(false);
       return;
     }
+    if (typeof moves !== "number" || moves < 0) return;
+    const targetPos = moves * stepSize;
+    let currentPos = position;
 
-    let pos = 0;
-    let i = 0;
-
-    const moveLoop = () => {
-      if (i >= commands.length) return;
-
-      const cmd = commands[i];
-      if (cmd === "➡️") pos += stepSize;
-      else if (cmd === "⬅️") pos -= stepSize;
-      else if (cmd === "🕐") {
-        setTimerUsed(true);
-        setTimeout(() => {
-          i++;
-          moveLoop();
-        }, 1000);
-        return;
+    const moveRabbit = () => {
+      if (currentPos < targetPos) {
+        currentPos += 4;
+        if (currentPos > targetPos) currentPos = targetPos;
+        setPosition(currentPos);
+      } else if (currentPos > targetPos) {
+        currentPos -= 4;
+        if (currentPos < targetPos) currentPos = targetPos;
+        setPosition(currentPos);
       }
 
-      setPosition(pos);
-      if (pos >= goalPosition && !goalReached) {
+      if (
+        currentPos === targetPos &&
+        currentPos >= goalPosition &&
+        !goalReached
+      ) {
         setGoalReached(true);
+        if (audioRef.current) {
+          audioRef.current
+            .play()
+            .catch((e) => console.error("Audio error:", e));
+        }
       }
-
-      i++;
-      setTimeout(moveLoop, 300);
     };
-
-    moveLoop();
-
-    // 片方にするため clearInterval は不要
-  }, [commands, resetting]);
+    const interval = setInterval(moveRabbit, 10);
+    return () => clearInterval(interval);
+  }, [moves, goalReached, resetting]);
 
   return (
     <div className="mt-18 relative w-[600px] h-[350px] border-4 border-[#f1e42d] rounded-lg shadow-lg overflow-hidden mb-6">
+      <audio ref={audioRef} src="/music/goal.mp3" preload="auto" />
+      <audio ref={nextLevelAudioRef} src="/music/kyupi.mp3" preload="auto" />
+      <audio ref={tryAgainAudioRef} src="/music/tryAgain.mp3" preload="auto" />
       {Array.from({ length: goalPosition / cellSize + 1 }).map((_, i) => {
         const left = i * cellSize;
         const isCurrent = Math.round(position / cellSize) === i;
@@ -109,8 +133,9 @@ const CanvasRabbit2: React.FC<Props> = ({ commands, resetting }) => {
         }}
         className="absolute top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full"
       />
+
       {/* ゴール時の処理 */}
-      {goalReached && timerUsed && (
+      {goalReached && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-neutral-900/80">
           <SideBar />
           <div className="bgOriWhite p-6 rounded-lg shadow-lg text-center max-w-md w-full">
@@ -132,7 +157,7 @@ const CanvasRabbit2: React.FC<Props> = ({ commands, resetting }) => {
             <div className="flex justify-center gap-4">
               <button
                 className="bg-cyan-500 oriWhite px-4 py-2 rounded hover:bg-blue-600 transition cursor-pointer"
-                onClick={() => window.location.reload()}
+                onClick={tryAgain}
               >
                 再挑戦
               </button>
@@ -146,43 +171,6 @@ const CanvasRabbit2: React.FC<Props> = ({ commands, resetting }) => {
           </div>
         </div>
       )}
-      {/* タイマーを使っていなかった時のエラー処理 */}
-      {goalReached && !timerUsed && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-neutral-900/80">
-          <SideBar />
-          <div className="bgOriWhite flex flex-col justify-center items-center p-6 rounded-lg shadow-lg text-center max-w-md w-full">
-            <strong className="font-bold text-2xl">
-              🕐を使ってないみたいだよ！ひと休みしてから進もう！
-            </strong>
-            <br />
-            <span className="block sm:inline ml-2"></span>
-
-            <div className="my-4 text-sm text-gray-700 flex">
-              <h1 className="l">ヒント：</h1>
-              <p>🕐を使うと1秒休めるよ!</p>
-            </div>
-
-            <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
-              <Player
-                autoplay
-                loop
-                src="/anime/sadStar.json"
-                style={{ height: "300px", width: "300px" }}
-              />
-            </div>
-
-            <div className="flex justify-center gap-4">
-              <button
-                className="bg-cyan-500 oriWhite px-4 py-2 rounded hover:bg-blue-600 transition cursor-pointer"
-                onClick={() => window.location.reload()}
-              >
-                もう一回
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
-};
-export default CanvasRabbit2;
+}

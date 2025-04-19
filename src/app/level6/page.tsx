@@ -1,22 +1,25 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { emoji3 } from "../../utils/level3Emoji";
+import { emoji4 } from "../../utils/level4Emoji";
 import SideBar from "@/components/SideBar";
 import Image from "next/image";
 import LoadingScreen from "@/components/LoadingScreen";
 import { motion } from "framer-motion";
-import CanvasTurtle3 from "@/components/level3";
+import CanvasTurtleRabbit from "@/components/level6";
 
 export default function Level4Page() {
-  const [code, setCode] = useState("🐢");
-  const [commands, setCommands] = useState<string[]>([]);
+  const [code, setCode] = useState("🐰\n🐢");
+  const [commands, setCommands] = useState<{
+    rabbit: string[];
+    turtle: string[];
+  }>({ rabbit: [], turtle: [] });
   const [resetting, setResetting] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (commands.length > 0) {
+    if (commands.rabbit.length > 0 || commands.turtle.length > 0) {
       console.log("Canvas received commands:", commands);
     }
   }, [commands]);
@@ -28,10 +31,23 @@ export default function Level4Page() {
 
   if (loading) return <LoadingScreen />;
 
-  const emojiButtons = ["🐢", "➡️", "⬅️"];
+  const emojiButtons = ["🐰", "🐢", "➡️", "⬅️", "🕐"];
 
   const handleEmojiClick = (emoji: string) => {
-    setCode((prev) => prev + emoji);
+    if (!textareaRef.current) return;
+
+    const textarea = textareaRef.current;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    const newCode = code.slice(0, start) + emoji + code.slice(end);
+    setCode(newCode);
+
+    // カーソルを絵文字の後に持ってくる
+    setTimeout(() => {
+      textarea.focus();
+      textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+    }, 0);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
@@ -47,15 +63,14 @@ export default function Level4Page() {
   };
 
   const handleRun = () => {
-    const result = emoji3(code);
-    console.log("emoji3 result:", result);
+    const result = emoji4(code);
     setCommands(result);
     setResetting(false);
   };
 
   const handleRetry = () => {
-    setCommands([]);
-    setCode("🐢");
+    setCommands({ rabbit: [], turtle: [] });
+    setCode("🐰\n🐢");
     setResetting(true);
   };
 
@@ -72,14 +87,22 @@ export default function Level4Page() {
       </div>
       <SideBar />
       <main className="min-h-screen flex flex-col items-center justify-center">
-        <h1 className="flex justify-start items-center text-5xl font-bold text-center header mb-4">
-          Level 3: かめでゴールぴったり走ろう！
+        <h1 className="text-5xl font-bold text-center header mb-4">
+          Level 6: うさぎとカメを
+          <strong className="text-green-600 ml-2">
+            同時にゴールさせよう！
+          </strong>
         </h1>
-        <p className="text-xl">
-          ヒント：かめは➡️で１マス、⬅️で１マスもどるよ！
+        <p className="text-xl text-center">
+          🐰は２マス、🐢は１マス進むよ。ぴったりゴールをしよう！
+          <br />
+          <span className="text-yellow-600 font-bold">
+            🕐でうさぎを休ませる
+          </span>
+          のがポイント！
         </p>
 
-        <div className="flex justify-center items-center h-screen mt-5 ml-20 gap-10">
+        <div className="flex items-center h-screen mt-5 ml-20 gap-10">
           <div className="h-full">
             <div className="flex gap-4 mb-4">
               {emojiButtons.map((emoji) => (
@@ -101,23 +124,23 @@ export default function Level4Page() {
               ref={textareaRef}
               value={code}
               onChange={(e) => setCode(e.target.value)}
-              rows={3}
+              rows={4}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               className="w-full max-w-lg min-h-[350px] p-4 text-4xl rounded-md border-4 border-[#f1e42d] focus:outline-none focus:ring-2 focus:ring-pink-300 mb-6"
-              placeholder="🐢"
+              placeholder={`🐰\n🐢`}
             />
 
             <div className="flex items-center gap-3">
               <button
                 onClick={handleRun}
-                className="bg-blue-500 oriWhite py-2 px-6 rounded-lg text-xl hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 transition duration-300 mb-6 cursor-pointer"
+                className="cursor-pointer bg-blue-500 oriWhite py-2 px-6 rounded-lg text-xl hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300 transition duration-300 mb-6"
               >
                 スタート
               </button>
               <button
                 onClick={handleRetry}
-                className="bg-red-500 oriWhite py-2 px-6 rounded-lg text-xl hover:bg-red-600 focus:ring-4 focus:ring-red-300 transition duration-300 mb-6 cursor-pointer"
+                className="cursor-pointer bg-red-500 oriWhite py-2 px-6 rounded-lg text-xl hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition duration-300 mb-6"
               >
                 リセット
               </button>
@@ -125,7 +148,7 @@ export default function Level4Page() {
           </div>
 
           <div className="h-full">
-            <CanvasTurtle3 commands={commands} resetting={resetting} />
+            <CanvasTurtleRabbit commands={commands} resetting={resetting} />
           </div>
         </div>
       </main>

@@ -33,6 +33,15 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Ostrich';
+  src: url('/fonts/Ostrich.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -56,4 +65,8 @@ body {
   font-family: "Phosphate";
   color: #5F8B4C;
   stroke-width:2 #131b10;
+}
+
+.Ostrich {
+  font-family: "Phosphate";
 }

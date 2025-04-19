@@ -119,7 +119,7 @@ export default function SideBar() {
 
             {levelsOpen && (
               <div className="pl-6 space-y-2">
-                {[1, 2, 3, 4].map((level) => (
+                {[1, 2, 3, 4, 5, 6].map((level) => (
                   <Link key={`level-${level}`} href={`/level${level}`}>
                     <motion.span
                       initial={{ opacity: 0, x: -10 }}

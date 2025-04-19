@@ -29,12 +29,18 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
   const cellSize = 60;
-
   const rabbitIndexRef = useRef(0);
   const turtleIndexRef = useRef(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const missAudioRef = useRef<HTMLAudioElement | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const moveNextLevel = () => {
-    router.push("/level5");
+    router.push("/shop");
   };
   useEffect(() => {
     const hints = [
@@ -69,6 +75,11 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
             clearInterval(interval);
             setPopupMessage("🐰ウサギがゴールを超えちゃった！失敗！");
             setShowPopup(true);
+            if (missAudioRef.current) {
+              missAudioRef.current
+                .play()
+                .catch((e) => console.error("Audio error:", e));
+            }
             return pos;
           }
           return newPos;
@@ -89,6 +100,11 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
             clearInterval(interval);
             setPopupMessage("🐢カメがゴールを超えちゃった！失敗！");
             setShowPopup(true);
+            if (missAudioRef.current) {
+              missAudioRef.current
+                .play()
+                .catch((e) => console.error("Audio error:", e));
+            }
             return pos;
           }
           return newPos;
@@ -107,14 +123,29 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
           setWinner("draw");
           setGoalReached(true);
           clearInterval(interval);
+          if (audioRef.current) {
+            audioRef.current
+              .play()
+              .catch((e) => console.error("Audio error:", e));
+          }
         } else if (rabbitPos >= goalPosition && !showPopup) {
           setWinner("rabbit");
           setGoalReached(true);
           clearInterval(interval);
+          if (audioRef.current) {
+            audioRef.current
+              .play()
+              .catch((e) => console.error("Audio error:", e));
+          }
         } else if (turtlePos >= goalPosition && !showPopup) {
           setWinner("turtle");
           setGoalReached(true);
           clearInterval(interval);
+          if (audioRef.current) {
+            audioRef.current
+              .play()
+              .catch((e) => console.error("Audio error:", e));
+          }
         } else {
           setGoalReached(false);
         }
@@ -138,6 +169,8 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
       className="mt-18 relative h-[350px] border-4 border-[#f1e42d] rounded-lg shadow-lg overflow-x-auto overflow-y-hidden mb-6"
       style={{ width: `${totalWidth}px` }}
     >
+      <audio ref={audioRef} src="/music/goal.mp3" preload="auto" />
+      <audio ref={missAudioRef} src="/music/miss.mp3" preload="auto" />
       {Array.from({ length: goalPosition + 1 }).map((_, i) => {
         const left = i * cellSize;
         const isRabbitCurrent = rabbitPos === i;
@@ -170,12 +203,14 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
         className="absolute bottom-[10px] left-[-20px]  transition-transform duration-100 ease-in-out"
         style={{ transform: `translateX(${rabbitPos * cellSize}px)` }}
       >
-        <Player
-          autoplay
-          loop
-          src="/anime/rabbit.json"
-          style={{ height: "140px", width: "140px" }}
-        />
+        {isClient && (
+          <Player
+            autoplay
+            loop
+            src="/anime/rabbit.json"
+            style={{ height: "140px", width: "140px" }}
+          />
+        )}
       </div>
 
       {/* カメのアニメーション */}
@@ -183,26 +218,30 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
         className="absolute top-[10px] transition-transform duration-100 ease-in-out"
         style={{ transform: `translateX(${turtlePos * cellSize}px)` }}
       >
-        <Player
-          autoplay
-          loop
-          src="/anime/turtle.json"
-          style={{ height: "100px", width: "100px" }}
-        />
+        {isClient && (
+          <Player
+            autoplay
+            loop
+            src="/anime/turtle.json"
+            style={{ height: "100px", width: "100px" }}
+          />
+        )}
       </div>
 
       {/* ゴールアニメーション */}
-      <Player
-        autoplay
-        loop
-        src="/anime/goal.json"
-        style={{
-          height: "100px",
-          width: "100px",
-          left: `${goalPosition * cellSize - 30}px`,
-        }}
-        className="absolute top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full"
-      />
+      {isClient && (
+        <Player
+          autoplay
+          loop
+          src="/anime/goal.json"
+          style={{
+            height: "100px",
+            width: "100px",
+            left: `${goalPosition * cellSize - 30}px`,
+          }}
+          className="absolute top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full"
+        />
+      )}
 
       {/* 勝者の表示 */}
       {winner && !showPopup && (
@@ -244,12 +283,14 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
                   ウサギもがんばってるはず。もう少し待ってみよう！
                 </p>
                 <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
-                  <Player
-                    autoplay
-                    loop
-                    src="/anime/normalStar.json"
-                    style={{ height: "300px", width: "300px" }}
-                  />
+                  {isClient && (
+                    <Player
+                      autoplay
+                      loop
+                      src="/anime/normalStar.json"
+                      style={{ height: "300px", width: "300px" }}
+                    />
+                  )}
                 </div>
                 <div className="flex justify-center gap-4">
                   <button
@@ -270,12 +311,14 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
                   ウサギとカメ、力を合わせて同時にゴール！すてきな友情だね！
                 </p>
                 <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
-                  <Player
-                    autoplay
-                    loop
-                    src="/anime/star.json"
-                    style={{ height: "300px", width: "300px" }}
-                  />
+                  {isClient && (
+                    <Player
+                      autoplay
+                      loop
+                      src="/anime/star.json"
+                      style={{ height: "300px", width: "300px" }}
+                    />
+                  )}
                 </div>
                 <div className="flex justify-center gap-4">
                   <button
@@ -312,12 +355,14 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
             </div>
 
             <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
-              <Player
-                autoplay
-                loop
-                src="/anime/sadStar.json"
-                style={{ height: "300px", width: "300px" }}
-              />
+              {isClient && (
+                <Player
+                  autoplay
+                  loop
+                  src="/anime/sadStar.json"
+                  style={{ height: "300px", width: "300px" }}
+                />
+              )}
             </div>
 
             <div className="flex justify-center gap-4">
