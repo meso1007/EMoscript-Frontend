@@ -256,7 +256,7 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
                 <p className="mb-4">
                   でも…カメを待ってあげよう。レースはまだ終わってない！
                 </p>
-                <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
+                <div className="absolute top-1/2 right-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out">
                   <Player
                     autoplay
                     loop
@@ -282,7 +282,7 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
                 <p className="mb-4">
                   ウサギもがんばってるはず。もう少し待ってみよう！
                 </p>
-                <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
+                <div className="absolute top-1/2 right-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out">
                   {isClient && (
                     <Player
                       autoplay
@@ -310,7 +310,7 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
                 <p className="mb-4">
                   ウサギとカメ、力を合わせて同時にゴール！すてきな友情だね！
                 </p>
-                <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
+                <div className="absolute top-1/2 right-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out">
                   {isClient && (
                     <Player
                       autoplay
@@ -354,7 +354,7 @@ export default function CanvasTurtleRabbit({ commands, resetting }: Props) {
               <p>{randomHint}</p>
             </div>
 
-            <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
+            <div className="absolute top-1/2 right-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out">
               {isClient && (
                 <Player
                   autoplay

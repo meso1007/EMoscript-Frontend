@@ -139,7 +139,7 @@ export default function LevelSelect() {
                   </td>
                   <td className="w-full py-2 px-4 border-b flex justify-center">
                     <Link
-                      href="/shop"
+                      href="/checkout"
                       className="w-[200px] h-full bg-[#f8e97d] rounded-2xl shadow-lg flex items-center justify-center hover:bg-[#e8db7e] transition py-2 px-4"
                     >
                       <LuLockKeyhole />
@@ -154,7 +154,7 @@ export default function LevelSelect() {
                   </td>
                   <td className="w-full py-2 px-4 border-b flex justify-center">
                     <Link
-                      href="/shop"
+                      href="/checkout"
                       className="w-[200px] h-full bg-[#f8e97d] rounded-2xl shadow-lg flex items-center justify-center hover:bg-[#e8db7e] transition py-2 px-4"
                     >
                       <LuLockKeyhole />

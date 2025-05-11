@@ -1,7 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
 
-// この形じゃないとエラーが出る。SSR無効で読み込み！
 const LottiePlayer = dynamic(
   () => import("@lottiefiles/react-lottie-player").then(mod => mod.Player),
   { ssr: false }
@@ -13,7 +12,7 @@ export default function LoadingScreen() {
       <LottiePlayer
         autoplay
         loop
-        src="/anime/loading3.json"
+        src="/anime/loading.json"
         style={{ height: "600px", width: "600px" }}
       />
     </div>

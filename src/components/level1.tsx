@@ -113,7 +113,6 @@ export default function CanvasTurtle({ moves, resetting }: Props) {
         className="absolute top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full"
       />
 
-      {/* ゴール時の処理 */}
       {goalReached && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-neutral-900/80">
           <SideBar />
@@ -123,7 +122,7 @@ export default function CanvasTurtle({ moves, resetting }: Props) {
             </h2>
             <p className="mb-4">おめでとう！ カメがゴールに到達しました。</p>
             <div
-              className="absolute top-1/2 left-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out"
+              className="absolute top-1/2 -left-1/2 transform -translate-y-1/2 transition-transform duration-100 ease-in-out"
               style={{ transform: `translateX(${position}px)` }}
             >
               <Player

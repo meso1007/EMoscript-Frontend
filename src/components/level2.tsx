@@ -144,7 +144,7 @@ export default function CanvasRabbit({ moves, resetting }: Props) {
             </h2>
             <p className="mb-4">やったね！ ウサギもゴールに到達しました。</p>
             <div
-              className="absolute top-1/2 left-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out"
+              className="absolute top-1/2 -left-1/2 transform -translate-y-1/2 transition-transform duration-100 ease-in-out"
               style={{ transform: `translateX(${position}px)` }}
             >
               <Player

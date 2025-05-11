@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import "./SideBar.css";
+import { FaRegUser } from "react-icons/fa";
 import {
   FiHome,
   FiSettings,
@@ -12,15 +13,28 @@ import {
   FiArrowUp,
   FiArrowDown,
 } from "react-icons/fi";
+import { GrLogin, GrLogout } from "react-icons/gr";
 import { IoTriangleOutline } from "react-icons/io5";
 import { LuLockKeyhole } from "react-icons/lu";
-
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function SideBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [levelsOpen, setLevelsOpen] = useState(false);
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const router = useRouter();
+  const logout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user");
+    router.push("/login");
+  };
+  const login = () => {
+    router.push("/login");
+  };
 
   return (
     <motion.aside
@@ -89,7 +103,7 @@ export default function SideBar() {
             </Link>
 
             {/* ここは有料オプション */}
-            <Link href="/shop">
+            <Link href="/profile">
               <motion.span
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -98,7 +112,7 @@ export default function SideBar() {
                 className="flex items-center gap-2 hover:text-blue-400 pb-4 border-b-2 border-gray-400"
               >
                 <FiUser /> プロフィール
-                <LuLockKeyhole />
+                {user ? "" : <LuLockKeyhole />}
               </motion.span>
             </Link>
             <Link href="" onClick={() => setLevelsOpen(!levelsOpen)}>
@@ -147,7 +161,50 @@ export default function SideBar() {
             )}
           </div>
 
-          {/* ここは有料オプション */}
+          <div>
+            <Link href="/profile">
+              <motion.span
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
+                className="flex items-center gap-2 hover:text-blue-400"
+              >
+                <FaRegUser />
+                <p>{user?.username || "ゲスト"}</p>
+              </motion.span>
+            </Link>
+          </div>
+
+          {user ? (
+            <div>
+              <button onClick={logout}>
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="flex items-center gap-2 hover:text-blue-400 cursor-pointer"
+                >
+                  <GrLogout /> ログアウト
+                </motion.span>
+              </button>
+            </div>
+          ) : (
+            <div>
+              <button onClick={login}>
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="flex items-center gap-2 hover:text-blue-400 cursor-pointer"
+                >
+                  <GrLogin /> ログイン
+                </motion.span>
+              </button>
+            </div>
+          )}
           <div>
             <Link href="/settings">
               <motion.span
@@ -158,12 +215,13 @@ export default function SideBar() {
                 className="flex items-center gap-2 hover:text-blue-400"
               >
                 <FiSettings /> 設定
-                <LuLockKeyhole />
+                {user ? "" : <LuLockKeyhole />}
               </motion.span>
             </Link>
           </div>
         </nav>
       ) : (
+        // 開く前
         <AnimatePresence>
           <nav className="text-3xl justify-between items-center h-[80vh] py-10 flex flex-col gap-4 mt-4 space-y-4 p-4">
             <div className="h-full flex flex-col gap-4 mt-4 space-y-4">
@@ -178,7 +236,7 @@ export default function SideBar() {
                   <FiHome />
                 </motion.span>
               </Link>
-              <Link href="/shop">
+              <Link href="/profile">
                 <motion.span
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -206,7 +264,49 @@ export default function SideBar() {
               </Link>
             </div>
             <div>
-              <Link href="/shop">
+              <Link href="/profile">
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="flex items-center gap-2 hover:text-blue-400"
+                >
+                  <FaRegUser />
+                </motion.span>
+              </Link>
+            </div>
+            {user ? (
+              <div>
+                <button onClick={logout}>
+                  <motion.span
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    className="flex items-center gap-2 hover:text-blue-400 cursor-pointer"
+                  >
+                    <GrLogout />
+                  </motion.span>
+                </button>
+              </div>
+            ) : (
+              <div>
+                <button onClick={login}>
+                  <motion.span
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    className="flex items-center gap-2 hover:text-blue-400 cursor-pointer"
+                  >
+                    <GrLogin />
+                  </motion.span>
+                </button>
+              </div>
+            )}
+            <div>
+              <Link href="/settings">
                 <motion.span
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}

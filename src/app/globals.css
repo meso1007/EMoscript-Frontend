@@ -70,3 +70,29 @@ body {
 .Ostrich {
   font-family: "Phosphate";
 }
+
+@keyframes borderColorAnimation {
+  0% {
+    border-color: #B09C4E; /* 深みのあるゴールド */
+  }
+  25% {
+    border-color: #D88C3C; /* くすんだゴールド */
+  }
+  50% {
+    border-color: #3C5A99; /* 深いネイビー */
+  }
+  75% {
+    border-color: #D84F8C; /* 深いローズゴールド */
+  }
+  100% {
+    border-color: #B09C4E; /* 深みのあるゴールド */
+  }
+}
+
+.animated-border {
+  border-width: 4px;
+  border-style: solid;
+  border-color: #B09C4E; /* 初期状態は深みのあるゴールド */
+  animation: borderColorAnimation 10s ease-in-out infinite; /* 10秒で繰り返しアニメーション */
+  border-radius: 1.5rem; /* 丸みのある角 */
+}

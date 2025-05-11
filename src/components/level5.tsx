@@ -123,7 +123,7 @@ const CanvasRabbit5: React.FC<Props> = ({ commands, resetting }) => {
             </h2>
             <p className="mb-4">やったね！ ウサギもゴールに到達しました。</p>
             <div
-              className="absolute top-1/2 left-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out"
+              className="absolute top-1/2 -left-1/4 transform -translate-y-1/2 transition-transform duration-100 ease-in-out"
               style={{ transform: `translateX(${position}px)` }}
             >
               <Player
@@ -166,7 +166,7 @@ const CanvasRabbit5: React.FC<Props> = ({ commands, resetting }) => {
               <p>🕐を使うと1秒休めるよ!</p>
             </div>
 
-            <div className="absolute top-1/2 left-2/3 transform -translate-y-1/2">
+            <div className="absolute top-1/2 right-2/3 transform -translate-y-1/2 transition-transform duration-100 ease-in-out">
               <Player
                 autoplay
                 loop
