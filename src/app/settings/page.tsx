@@ -9,15 +9,6 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState("ja");
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
-
-  const handleSummiting = () => {
-    if (typeof window !== "undefined") {
-      const accessToken = localStorage.getItem("access_token");
-      console.log("Token from localStorage:", accessToken);
-      setToken(accessToken);
-    }
-  };
 
   const toggleNotifications = () => {
     setNotificationsEnabled(!notificationsEnabled);
