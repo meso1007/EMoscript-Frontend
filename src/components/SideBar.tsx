@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./SideBar.css";
 import { FaRegUser } from "react-icons/fa";
 import {
@@ -21,10 +21,13 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function SideBar() {
+  type User = {
+    username: string;
+  };
+
+  const [user, setUser] = useState<User | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [levelsOpen, setLevelsOpen] = useState(false);
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
   const router = useRouter();
   const logout = () => {
     localStorage.removeItem("access_token");
@@ -35,7 +38,12 @@ export default function SideBar() {
   const login = () => {
     router.push("/login");
   };
-
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
   return (
     <motion.aside
       initial={{ width: "4rem" }}

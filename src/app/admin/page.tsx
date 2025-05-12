@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
@@ -32,17 +32,17 @@ const AdminUserList: React.FC = () => {
     setUserToDelete(user);
     setShowConfirmModal(true);
   };
-  useEffect(() => {
-    const token = localStorage.getItem("access_token");
-    console.log("Token from localStorage:", token);
-    setToken(token);
-  }, []);
 
   useEffect(() => {
     if (token) {
       fetchUsers();
     }
   }, [token]);
+  const isTokenExpired = (token: string) => {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const expirationTime = payload.exp * 1000;
+    return expirationTime < Date.now();
+  };
 
   const filteredUsers = users
     .filter(
@@ -62,6 +62,12 @@ const AdminUserList: React.FC = () => {
     });
 
   const fetchUsers = async () => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("access_token");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }
     if (!token) return;
     const res = await fetch("http://localhost:8000/api/accounts/admin/users/", {
       headers: {
@@ -78,6 +84,12 @@ const AdminUserList: React.FC = () => {
   };
 
   const handleDelete = async () => {
+    if (typeof window !== "undefined") {
+      const storedToken = localStorage.getItem("access_token");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }
     if (!userToDelete) return;
 
     const res = await fetch(

@@ -15,13 +15,14 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [token, setToken] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const accessToken = localStorage.getItem("access_token");
-      console.log("Token from localStorage:", accessToken);
-      setToken(accessToken);
-    }
-  }, []);
+    useEffect(() => {
+      if (typeof window !== "undefined") { // クライアントサイドでのみ実行
+        const storedToken = localStorage.getItem("access_token");
+        if (storedToken) {
+          setToken(storedToken);
+        }
+      }
+    }, []);
   return (
     <div className="h-screen rounded-lg shadow-2xl grid grid-cols-1 md:grid-cols-[3fr_4fr]">
       <SideBar />

@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import { useTranslation } from "../../../node_modules/react-i18next";
 import SideBar from "@/components/SideBar";
 import { useEffect, useState } from "react";
@@ -22,8 +22,7 @@ export default function SettingsPage() {
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLang = e.target.value;
     setLanguage(newLang);
-    i18n.changeLanguage(newLang); // 言語変更
-  };
+    i18n.changeLanguage(newLang);}
 
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br bg-gray-100 p-6">
