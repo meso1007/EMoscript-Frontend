@@ -59,7 +59,7 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
       return;
     }
 
-    const res = await fetch(`${apiUrl}/api/accounts/payment-intent/`, {
+    const res = await fetch(`${apiUrl}api/accounts/payment-intent/`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -95,7 +95,7 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
 
         // 支払い成功後にプレミアム会員を登録
         const premiumRes = await fetch(
-          `${apiUrl}/api/accounts/activate-premium/`,
+          `${apiUrl}api/accounts/activate-premium/`,
           {
             method: "POST",
             headers: {

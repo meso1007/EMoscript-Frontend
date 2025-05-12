@@ -22,7 +22,7 @@ export default function ForgotPasswordPage() {
 
     try {
       const response = await fetch(
-        `${apiUrl}/api/accounts/password_reset/`,
+        `${apiUrl}api/accounts/password_reset/`,
         {
           method: "POST",
           headers: {

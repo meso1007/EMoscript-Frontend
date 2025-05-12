@@ -51,7 +51,7 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const res: Response | null = await fetchWithAuth(
-          `${apiUrl}/api/accounts/profile/`
+          `${apiUrl}api/accounts/profile/`
         );
 
         if (!res) {
@@ -111,7 +111,7 @@ export default function ProfilePage() {
         }
 
         const response = await fetch(
-          `${apiUrl}/api/accounts/profile/`,
+          `${apiUrl}api/accounts/profile/`,
           {
             method: "PUT",
             headers: {

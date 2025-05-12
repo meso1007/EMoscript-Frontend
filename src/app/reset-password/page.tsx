@@ -50,7 +50,7 @@ const ResetPasswordContent = () => {
     setModalMessage("");
 
     try {
-      const res = await fetch(`${apiUrl}/api/accounts/password_reset/confirm/`, {
+      const res = await fetch(`${apiUrl}api/accounts/password_reset/confirm/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

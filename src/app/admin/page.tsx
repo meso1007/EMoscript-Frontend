@@ -70,7 +70,7 @@ const AdminUserList: React.FC = () => {
       }
     }
     if (!token) return;
-    const res = await fetch(`${apiUrl}/api/accounts/admin/users/`, {
+    const res = await fetch(`${apiUrl}api/accounts/admin/users/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -94,7 +94,7 @@ const AdminUserList: React.FC = () => {
     if (!userToDelete) return;
 
     const res = await fetch(
-      `${apiUrl}/api/accounts/admin/users/${userToDelete.id}/delete/`,
+      `${apiUrl}api/accounts/admin/users/${userToDelete.id}/delete/`,
       {
         method: "DELETE",
         headers: {
@@ -118,7 +118,7 @@ const AdminUserList: React.FC = () => {
 
   const toggleLock = async (userId: number) => {
     const res = await fetch(
-      `${apiUrl}/api/accounts/admin/users/${userId}/toggle-lock/`,
+      `${apiUrl}api/accounts/admin/users/${userId}/toggle-lock/`,
       {
         method: "POST",
         headers: {
