@@ -30,7 +30,7 @@ const ResetPasswordContent = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/"; // ローカル用のデフォルト値
 
 
   const handleReset = async (e: React.FormEvent) => {

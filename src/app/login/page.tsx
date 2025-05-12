@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";  // ローカル用のデフォルト値
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/";  // ローカル用のデフォルト値
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   

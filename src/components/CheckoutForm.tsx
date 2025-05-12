@@ -35,7 +35,7 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
   const [isProcessing, setProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/"; // ローカル用のデフォルト値
   const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(
     null
   ); // 型を直接指定

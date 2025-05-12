@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false); // 追加
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/"; // ローカル用のデフォルト値
 
 
   const router = useRouter();

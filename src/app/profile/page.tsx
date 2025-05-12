@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false); // 編集モードを管理する
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/"; // ローカル用のデフォルト値
 
   // user の型を修正
   const [user, setUser] = useState<{
@@ -83,6 +83,7 @@ export default function ProfilePage() {
     const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
+  
 
   if (loading) return <LoadingScreen />;
 
@@ -110,20 +111,19 @@ export default function ProfilePage() {
           formData.append("image", user.image);
         }
 
-        const response = await fetch(
-          `${apiUrl}api/accounts/profile/`,
-          {
-            method: "PUT",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          }
-        );
+        const response = await fetch(`${apiUrl}api/accounts/profile/`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
 
         if (!response.ok) {
           throw new Error("プロフィール更新失敗");
         }
+
+        
 
         setModalMessage("プロフィールを更新しました！");
         setIsModalOpen(true);
@@ -167,9 +167,12 @@ export default function ProfilePage() {
               {user.image && user.image !== "" && (
                 <Image
                   src={
-                    user.image instanceof File
-                      ? URL.createObjectURL(user.image)
-                      : `http://localhost:8000${user.image}`
+                    typeof user.image === "string" && user.image // 文字列かどうかをチェック
+                      ? `${apiUrl}${user.image.replace(
+                          /^\/+/,
+                          ""
+                        )}`
+                      : "/path/to/default-image.png"
                   }
                   alt="Profile Picture"
                   fill
