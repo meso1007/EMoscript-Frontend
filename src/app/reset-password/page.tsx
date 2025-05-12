@@ -8,7 +8,19 @@ import LoadingScreen from "@/components/LoadingScreen";
 import { motion } from "framer-motion";
 import Modal from "@/components/Modal";
 
+import { Suspense } from "react"; // Suspenseをインポート
+
+// 他のインポートはそのままで
+
 export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordContent />
+    </Suspense>
+  );
+}
+
+const ResetPasswordContent = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -23,7 +35,8 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     if (!token) {
       setModalMessage("トークンが無効です。")
-      setIsModalOpen(true);      return;
+      setIsModalOpen(true);
+      return;
     }
     if (newPassword.length < 6) {
       setModalMessage("パスワードは6文字以上にしてください")
@@ -32,7 +45,7 @@ export default function ResetPasswordPage() {
     }
 
     setSubmitting(true);
-    setModalMessage("")
+    setModalMessage("");
 
     try {
       const res = await fetch("http://localhost:8000/api/accounts/password_reset/confirm/", {
@@ -132,4 +145,4 @@ export default function ResetPasswordPage() {
       </form>
     </motion.div>
   );
-}
+};

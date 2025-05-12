@@ -27,7 +27,7 @@ export default function RootLayout({
   useEffect(() => {
     const currentLang = i18n.language || "ja";
     document.documentElement.lang = currentLang;
-  }, [i18n.language]);
+  }, []);
 
   return (
     <html lang={i18n.language}>

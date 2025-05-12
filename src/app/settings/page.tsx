@@ -1,7 +1,7 @@
 "use client";
 import { useTranslation } from "../../../node_modules/react-i18next";
 import SideBar from "@/components/SideBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SettingsPage() {
   const { t, i18n } = useTranslation(); // t関数とi18nインスタンスを取得
@@ -9,6 +9,15 @@ export default function SettingsPage() {
   const [language, setLanguage] = useState("ja");
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [autoUpdateEnabled, setAutoUpdateEnabled] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  const handleSummiting = () => {
+    if (typeof window !== "undefined") {
+      const accessToken = localStorage.getItem("access_token");
+      console.log("Token from localStorage:", accessToken);
+      setToken(accessToken);
+    }
+  };
 
   const toggleNotifications = () => {
     setNotificationsEnabled(!notificationsEnabled);
@@ -28,12 +37,17 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-gradient-to-br bg-gray-100 p-6">
       <SideBar />
-      <div className={`settings-page min-w-5xl p-6 bg-white rounded-xl shadow-md`}>
-      <h2 className="text-2xl font-semibold mb-8">{t('settings')}</h2>
+      <div
+        className={`settings-page min-w-5xl p-6 bg-white rounded-xl shadow-md`}
+      >
+        <h2 className="text-2xl font-semibold mb-8">{t("settings")}</h2>
 
         {/* 通知設定 */}
         <div className="setting-item mb-6">
-          <label className="block text-sm font-medium mb-2" htmlFor="notifications">
+          <label
+            className="block text-sm font-medium mb-2"
+            htmlFor="notifications"
+          >
             通知を受け取る
           </label>
           <label className="relative inline-flex items-center cursor-pointer">
@@ -69,7 +83,10 @@ export default function SettingsPage() {
 
         {/* 自動アップデート設定 */}
         <div className="setting-item mb-6">
-          <label htmlFor="autoUpdate" className="block text-sm font-medium mb-2">
+          <label
+            htmlFor="autoUpdate"
+            className="block text-sm font-medium mb-2"
+          >
             自動アップデート
           </label>
           <label className="relative inline-flex items-center cursor-pointer">

@@ -5,6 +5,7 @@ import CheckoutForm from "@/components/CheckoutForm";
 import { useRouter } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
 import SideBar from "@/components/SideBar";
+import { useEffect, useState } from "react";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -12,6 +13,15 @@ const stripePromise = loadStripe(
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const accessToken = localStorage.getItem("access_token");
+      console.log("Token from localStorage:", accessToken);
+      setToken(accessToken);
+    }
+  }, []);
   return (
     <div className="h-screen rounded-lg shadow-2xl grid grid-cols-1 md:grid-cols-[3fr_4fr]">
       <SideBar />
@@ -62,7 +72,7 @@ export default function CheckoutPage() {
 
         <div className="p-8 bg-white rounded-lg shadow-lg">
           <Elements stripe={stripePromise}>
-            <CheckoutForm />
+            <CheckoutForm token={token} />
           </Elements>
         </div>
       </div>

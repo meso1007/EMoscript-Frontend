@@ -1,4 +1,5 @@
 "use client";
+
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
 import React, { useEffect, useState } from "react";
@@ -19,7 +20,9 @@ const AdminUserList: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [roleFilter, setRoleFilter] = useState<"all" | "staff" | "user">("all");
-  const [premiumFilter, setPremiumFilter] = useState<"all" | "premium" | "non-premium">("all"); // プレミアムフィルター追加
+  const [premiumFilter, setPremiumFilter] = useState<
+    "all" | "premium" | "non-premium"
+  >("all");
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,18 +32,17 @@ const AdminUserList: React.FC = () => {
     setUserToDelete(user);
     setShowConfirmModal(true);
   };
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    console.log("Token from localStorage:", token);
+    setToken(token);
+  }, []);
 
   useEffect(() => {
     if (token) {
       fetchUsers();
     }
   }, [token]);
-
-  useEffect(() => {
-    const tokenFromLocalStorage = localStorage.getItem("access_token");
-    console.log("Token from localStorage:", tokenFromLocalStorage);
-    setToken(tokenFromLocalStorage);
-  }, []);
 
   const filteredUsers = users
     .filter(
@@ -58,7 +60,6 @@ const AdminUserList: React.FC = () => {
       if (premiumFilter === "non-premium") return !user.is_premium;
       return true;
     });
-    
 
   const fetchUsers = async () => {
     if (!token) return;
@@ -78,8 +79,6 @@ const AdminUserList: React.FC = () => {
 
   const handleDelete = async () => {
     if (!userToDelete) return;
-
-    const token = localStorage.getItem("access_token");
 
     const res = await fetch(
       `http://localhost:8000/api/accounts/admin/users/${userToDelete.id}/delete/`,
@@ -105,7 +104,6 @@ const AdminUserList: React.FC = () => {
   };
 
   const toggleLock = async (userId: number) => {
-    const token = localStorage.getItem("access_token");
 
     const res = await fetch(
       `http://localhost:8000/api/accounts/admin/users/${userId}/toggle-lock/`,
@@ -140,7 +138,7 @@ const AdminUserList: React.FC = () => {
         message={modalMessage}
         onClose={() => setIsModalOpen(false)}
       />
-      <SideBar/>
+      <SideBar />
       {showConfirmModal && userToDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-100 rounded-lg p-6 max-w-md w-full shadow-lg">
@@ -194,7 +192,9 @@ const AdminUserList: React.FC = () => {
         <select
           value={premiumFilter}
           onChange={(e) =>
-            setPremiumFilter(e.target.value as "all" | "premium" | "non-premium")
+            setPremiumFilter(
+              e.target.value as "all" | "premium" | "non-premium"
+            )
           }
           className="border border-gray-300 rounded px-3 py-1"
         >

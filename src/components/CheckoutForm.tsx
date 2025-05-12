@@ -1,3 +1,5 @@
+
+import { PaymentRequest } from "@stripe/stripe-js"; // PaymentRequestを個別にインポート
 import {
   CardElement,
   PaymentRequestButtonElement,
@@ -24,16 +26,20 @@ const CARD_OPTIONS = {
   },
 };
 
-const CheckoutForm = () => {
+interface Token {
+  token: string | null;
+}
+
+const CheckoutForm: React.FC<Token> = ({ token }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [isProcessing, setProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const [paymentRequest, setPaymentRequest] =
-    useState<Stripe.PaymentRequest | null>(null);
+  useState<PaymentRequest | null>(null); // 型を直接指定
   const router = useRouter();
-
+  
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,8 +49,7 @@ const CheckoutForm = () => {
     setModalMessage("");
     setIsModalOpen(true);
 
-    const token = localStorage.getItem("access_token");
-    console.log("送信データ:", { token });
+
 
     if (!token) {
       setModalMessage(
@@ -147,19 +152,19 @@ const CheckoutForm = () => {
     });
   }, [stripe]);
 
-  useEffect(() => {
-    console.log("paymentRequest:", paymentRequest);
-    if (!paymentRequest || !elements) return;
+  // useEffect(() => {
+  //   console.log("paymentRequest:", paymentRequest);
+  //   if (!paymentRequest || !elements) return;
 
-    const prButton = elements.getElement(PaymentRequestButtonElement);
-    console.log("prButton:", prButton); // prButton が null でないことを確認
+  //   const prButton = elements.getElement(PaymentRequestButtonElement);
+  //   console.log("prButton:", prButton); // prButton が null でないことを確認
 
-    if (prButton) {
-      prButton.update({
-        paymentRequest,
-      });
-    }
-  }, [paymentRequest, elements]);
+  //   if (prButton) {
+  //     prButton.update({
+  //       paymentRequest,
+  //     });
+  //   }
+  // }, [paymentRequest, elements]);
 
   return (
     <div className="max-w-md mx-auto p-6 rounded-2xl">
