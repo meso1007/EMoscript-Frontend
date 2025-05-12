@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Modal from "@/components/Modal";
 import SideBar from "@/components/SideBar";
@@ -27,6 +27,7 @@ const AdminUserList: React.FC = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
 
   const handleDeleteConfirm = (user: User) => {
     setUserToDelete(user);
@@ -39,7 +40,7 @@ const AdminUserList: React.FC = () => {
     }
   }, [token]);
   const isTokenExpired = (token: string) => {
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    const payload = JSON.parse(atob(token.split(".")[1]));
     const expirationTime = payload.exp * 1000;
     return expirationTime < Date.now();
   };
@@ -69,7 +70,7 @@ const AdminUserList: React.FC = () => {
       }
     }
     if (!token) return;
-    const res = await fetch("http://localhost:8000/api/accounts/admin/users/", {
+    const res = await fetch(`${apiUrl}/api/accounts/admin/users/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -93,7 +94,7 @@ const AdminUserList: React.FC = () => {
     if (!userToDelete) return;
 
     const res = await fetch(
-      `http://localhost:8000/api/accounts/admin/users/${userToDelete.id}/delete/`,
+      `${apiUrl}/api/accounts/admin/users/${userToDelete.id}/delete/`,
       {
         method: "DELETE",
         headers: {
@@ -116,9 +117,8 @@ const AdminUserList: React.FC = () => {
   };
 
   const toggleLock = async (userId: number) => {
-
     const res = await fetch(
-      `http://localhost:8000/api/accounts/admin/users/${userId}/toggle-lock/`,
+      `${apiUrl}/api/accounts/admin/users/${userId}/toggle-lock/`,
       {
         method: "POST",
         headers: {

@@ -17,11 +17,12 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";  // ローカル用のデフォルト値
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
     try {
-      const response = await fetch("http://localhost:8000/api/accounts/login/", {
+const response = await fetch(`${apiUrl}/api/accounts/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

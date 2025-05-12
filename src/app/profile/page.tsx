@@ -18,6 +18,8 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false); // 編集モードを管理する
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+
   // user の型を修正
   const [user, setUser] = useState<{
     username: string;
@@ -49,7 +51,7 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const res: Response | null = await fetchWithAuth(
-          "http://localhost:8000/api/accounts/profile/"
+          `${apiUrl}/api/accounts/profile/`
         );
 
         if (!res) {
@@ -109,7 +111,7 @@ export default function ProfilePage() {
         }
 
         const response = await fetch(
-          "http://localhost:8000/api/accounts/profile/",
+          `${apiUrl}/api/accounts/profile/`,
           {
             method: "PUT",
             headers: {

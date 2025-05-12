@@ -1,4 +1,3 @@
-
 import { PaymentRequest } from "@stripe/stripe-js"; // PaymentRequestを個別にインポート
 import {
   CardElement,
@@ -36,10 +35,12 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
   const [isProcessing, setProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const [paymentRequest, setPaymentRequest] =
-  useState<PaymentRequest | null>(null); // 型を直接指定
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+  const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(
+    null
+  ); // 型を直接指定
   const router = useRouter();
-  
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,8 +49,6 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
     setProcessing(true);
     setModalMessage("");
     setIsModalOpen(true);
-
-
 
     if (!token) {
       setModalMessage(
@@ -60,17 +59,14 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
       return;
     }
 
-    const res = await fetch(
-      "http://localhost:8000/api/accounts/payment-intent/",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({}),
-      }
-    );
+    const res = await fetch(`${apiUrl}/api/accounts/payment-intent/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    });
 
     const data = await res.json();
 
@@ -99,7 +95,7 @@ const CheckoutForm: React.FC<Token> = ({ token }) => {
 
         // 支払い成功後にプレミアム会員を登録
         const premiumRes = await fetch(
-          "http://localhost:8000/api/accounts/activate-premium/",
+          `${apiUrl}/api/accounts/activate-premium/`,
           {
             method: "POST",
             headers: {

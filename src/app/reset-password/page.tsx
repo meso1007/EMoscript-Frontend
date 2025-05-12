@@ -30,6 +30,8 @@ const ResetPasswordContent = () => {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"; // ローカル用のデフォルト値
+
 
   const handleReset = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,7 +50,7 @@ const ResetPasswordContent = () => {
     setModalMessage("");
 
     try {
-      const res = await fetch("http://localhost:8000/api/accounts/password_reset/confirm/", {
+      const res = await fetch(`${apiUrl}/api/accounts/password_reset/confirm/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
